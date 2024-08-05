@@ -13,6 +13,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#define NELEMS(arr) (sizeof(arr) / sizeof(arr))
 
 /**
  * @brief nvmInit Allocate and initialize nvmInstance object.

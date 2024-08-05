@@ -1,0 +1,3 @@
+[submodule "ext/CMock"]
+	path = ext/CMock
+	url = https://github.com/ThrowTheSwitch/CMock.git

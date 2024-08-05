@@ -1,30 +1,7 @@
 #include "../nvmPrivate.h"
 #include <stdio.h>
 #include <string.h>
-static struct
-{
-    int passedCount;
-    int failCount;
-} testStatus = {0, 0};
-
-char printBuff[4096] = {'\0'};
-
-#define ERR(fmt, ...) \
-    do { \
-        sprintf(printBuff, fmt, __VA_ARGS__); \
-        fprintf(stderr, "FAILED: %s(%d): %s\n", __func__, __LINE__, printBuff); \
-    } while (0)
-
-#define FAIL_MSG(fmt, ...) ERR(fmt, __VA_ARGS__);
-
-#define ASSERT(x) \
-    if (!(x)) { \
-        testStatus.failCount++; \
-        ERR("Assertion failed: %s", #x); \
-    } else { \
-        testStatus.passedCount++; \
-    }
-
+#include <testHelper.h>
 #define ASSERT_OK(x) \
     do { \
         enum nvmStatus status = (x); \
@@ -78,7 +55,7 @@ void testNvmWriteRead(void)
     ASSERT(nvmStatusInvalidParam == nvmWirte(NULL, address, sizeof(testBuff), testBuff));
 
     ASSERT_OK(nvmWirte(nvm, address, sizeof(testBuff), testBuff));
-    ASSERT(0 == memcmp(testBuff, nvm->memory + address, sizeof(testBuff)))
+    ASSERT(0 == memcmp(testBuff, nvm->memory + address, sizeof(testBuff)));
 
     uint8_t zeroes[128] = {0x00};
     ASSERT_OK(nvmWirte(nvm, address, sizeof(zeroes), zeroes));
@@ -114,7 +91,7 @@ void testNvmErasePages(void)
     unsigned int page = 0;
     unsigned int pageCount = 1;
     ASSERT_OK(nvmErasePages(nvm, page, pageCount));
-    ASSERT(0 == memcmp(ones, nvm->memory + address, sizeof(ones)))
+    ASSERT(0 == memcmp(ones, nvm->memory + address, sizeof(ones)));
 
     ASSERT_OK(nvmDeinit(&nvm));
 }
@@ -149,11 +126,6 @@ int main(int argc, char *argv[])
     testNvmWriteRead();
     testNvmErasePages();
     testNvmEraseAll();
-    if (0 != testStatus.failCount) {
-        fprintf(stderr,
-                "Test suite failed with %d fails out of %d total assertions.\n",
-                testStatus.failCount,
-                testStatus.failCount + testStatus.passedCount);
-    }
-    return testStatus.failCount;
+    TEST_SUMMARY();
+    return TEST_RESULT();
 }
