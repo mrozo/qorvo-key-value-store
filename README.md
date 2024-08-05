@@ -4,6 +4,27 @@ This repository contains implementation of key value storage for nvm memory.
 
 The main module - keyValueNvm uses nvm interface to create a simple file system with header and data blocks. When an attribute data is bigger than a single data block, the system will split the attribute data into multiple data blocks (thats untested). Each data block can contain up to 122 bytes of data, and each attribute can split into up to 16 blocks, thus max size of an attribute data is 1952 bytes. For more information on partiton format read documentation inside ./keValueNvm/keyValueNvm.c .
 
+## How to start
+
+First clone the repository:
+
+```bash
+git clone git@github.com:mrozo/qorvo-key-value-store.git --recurse-submodules
+```
+
+Then build and run some tests:
+
+```bash
+mkdir build && cd build
+cmake ../
+cmake --build . --target all
+# example test
+./keyValueNvm/keyValueNvmTests 
+
+```
+
+Or use QT creator - it will handle everything for you. 
+
 ## Repository structure
 
  * ./sample - maybe in the future ;]
@@ -15,22 +36,6 @@ The main module - keyValueNvm uses nvm interface to create a simple file system 
  * ./testsHelper - test utility used to tes nvm, to be replaced with unity/CMock
  * ./keyValueNvm - implementation of the key value storage - the main module
  * ./nvmSim - nvm in memory simulator created to test the key value storage module. Currently not used.
-
-## Build system
-
-CMake is used to compile the code and run tests.
-
-In order to build the sdk and run tests execute:
-```bash
-mkdir build && cd build
-cmake ../
-cmake --build . --target all
-# example test
-./keyValueNvm/keyValueNvmTests 
-
-```
-
-Or use QT creator - it will handle everything for you. 
 
 ## Documentation
 
