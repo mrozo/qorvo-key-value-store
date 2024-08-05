@@ -18,8 +18,9 @@ Then build and run some tests:
 mkdir build && cd build
 cmake ../
 cmake --build . --target all
-# example test
+# example tests
 ./keyValueNvm/keyValueNvmTests 
+./nvmSim/nvmSimTest
 
 ```
 
